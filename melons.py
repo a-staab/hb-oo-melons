@@ -10,7 +10,10 @@ class AbstractMelonOrder(object):
         """Initialize melon order attributes"""
 
         self.species = species.lower()
-        self.qty = qty
+        if qty > 100:
+            raise TooManyMelonsError
+        else:
+            self.qty = qty
 
     def mark_shipped(self):
         """Set shipped to true."""
@@ -75,3 +78,10 @@ class GovernmentMelonOrder(AbstractMelonOrder):
         """
 
         self.passed_inspection = passed
+
+
+class TooManyMelonsError(ValueError):
+    """Exception that occurs when there are more than 100 melons."""
+
+    def __init__(self):
+        super(TooManyMelonsError, self).__init__("No more than 100 melons!")
