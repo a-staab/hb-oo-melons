@@ -3,14 +3,13 @@
 
 class AbstractMelonOrder(object):
     """A parent class for all melon orders"""
+    shipped = False
 
-    def __init__(self, species, qty, tax):
+    def __init__(self, species, qty):
         """Initialize melon order attributes"""
 
         self.species = species.lower()
         self.qty = qty
-        self.shipped = False
-        self.tax = tax
 
     def mark_shipped(self):
         """Set shipped to true."""
@@ -29,20 +28,17 @@ class AbstractMelonOrder(object):
 
 class DomesticMelonOrder(AbstractMelonOrder):
     """A domestic (in the US) melon order."""
-
-    def __init__(self, species, qty):
-        """Initialize melon order attributes"""
-
-        super(DomesticMelonOrder, self).__init__(species, qty, tax=0.08)
+    tax = 0.08
 
 
 class InternationalMelonOrder(AbstractMelonOrder):
     """An international (non-US) melon order."""
+    tax = 0.17
 
     def __init__(self, species, qty, country_code):
         """Initialize melon order attributes"""
 
-        super(InternationalMelonOrder, self).__init__(species, qty, tax=0.17)
+        super(InternationalMelonOrder, self).__init__(species, qty)
         self.country_code = country_code
 
     def get_country_code(self):
@@ -62,12 +58,8 @@ class InternationalMelonOrder(AbstractMelonOrder):
 
 class GovernmentMelonOrder(AbstractMelonOrder):
     """A government melon order."""
-
-    def __init__(self, species, qty):
-        """Initialize melon order attributes."""
-
-        super(GovernmentMelonOrder, self).__init__(species, qty, tax=0)
-        self.passed_inspection = False
+    tax = 0
+    passed_inspection = False
 
     def mark_inspection(self, passed):
         """Mark inspection true or false.
@@ -76,4 +68,3 @@ class GovernmentMelonOrder(AbstractMelonOrder):
         """
 
         self.passed_inspection = passed
-
